@@ -1,7 +1,7 @@
 # Gem::Specification for DrQueueRubyBindings
 
 Gem::Specification.new do |s|
-  s.name = %q{drqueuerubybindings}
+  s.name = %q{DrQueueRubyBindings}
   s.version = "0.1"
 
   s.required_rubygems_version = nil if s.respond_to? :required_rubygems_version=
@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.required_ruby_version = Gem::Requirement.new("> 0.0.0")
   s.requirements = ["Ruby bindings for DrQueue"]
-  s.rubygems_version = %q{1.2.0}
   s.summary = %q{Ruby extension library providing an API to DrQueue}
 
   if s.respond_to? :specification_version then
