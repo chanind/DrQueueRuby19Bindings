@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.required_ruby_version = Gem::Requirement.new("> 0.0.0")
   s.requirements = ["Ruby bindings for DrQueue"]
+  s.rubyforge_project = %q{drqueue}
   s.summary = %q{Ruby extension library providing an API to DrQueue}
 
   if s.respond_to? :specification_version then
