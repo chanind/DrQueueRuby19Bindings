@@ -115,6 +115,7 @@ slaves. Also provides access to all data structures of DrQueue."
 %include "luxrendersg.h"
 %include "mayasg.h"
 %include "vraysg.h"
+%include "3dsmaxsg.h"
 
 // type mapppings
 typedef unsigned int time_t;
@@ -272,7 +273,7 @@ typedef unsigned char uint8_t;
 	
 	
 	/* Blender script file generation */
-	char *blendersg (char *scene, char *scriptdir, uint8_t kind)
+	char *blendersg (char *scene, char *scriptdir, uint8_t render_type)
 	{	
 		struct blendersgi *blend = (struct blendersgi *)malloc (sizeof(struct blendersgi));
     	if (!blend) {
@@ -290,7 +291,7 @@ typedef unsigned char uint8_t;
 		
 		strncpy(blend->scene, scene, BUFFERLEN-1);
 		strncpy(blend->scriptdir, scriptdir, BUFFERLEN-1);
-		blend->kind = kind;
+		blend->render_type = render_type;
 		
   		outfile = blendersg_create(blend);
   		
@@ -433,7 +434,7 @@ typedef unsigned char uint8_t;
 	}
 
 	/* Maya script file generation */
-	char *mayasg (char *scene, char *projectdir, char *scriptdir, char *renderdir, char *image, char *file_owner, char *camera, int res_x, int res_y, char *format, uint8_t mentalray)
+	char *mayasg (char *scene, char *projectdir, char *scriptdir, char *renderdir, char *image, char *file_owner, char *camera, int res_x, int res_y, char *format, uint8_t renderer)
 	{	
 		struct mayasgi *mayast = (struct mayasgi *)malloc (sizeof(struct mayasgi));
     	if (!mayast) {
@@ -460,7 +461,7 @@ typedef unsigned char uint8_t;
 		mayast->res_x = res_x;
 		mayast->res_y = res_y;
 		strncpy(mayast->format, format, BUFFERLEN-1);
-		mayast->mentalray = mentalray;
+		mayast->renderer = renderer;
 		
   		outfile = mayasg_create(mayast);
   		
@@ -493,6 +494,37 @@ typedef unsigned char uint8_t;
 		strncpy(vray->scriptdir, scriptdir, BUFFERLEN-1);
 		
   		outfile = vraysg_create(vray);
+  		
+		if (!outfile) {
+			rb_raise(rb_eException,"Problem creating script file");
+      		return NULL;
+		}
+		
+		return outfile;
+	}
+	
+	/* 3DSMax script file generation */
+	char *threedsmaxsg (char *scene, char *scriptdir, char *image)
+	{	
+		struct threedsmaxsgi *vray = (struct threedsmaxsgi *)malloc (sizeof(struct threedsmaxsgi));
+    	if (!vray) {
+ 	     	rb_raise(rb_eNoMemError,"out of memory");
+    	 	return NULL;
+   		}	
+		
+		char *outfile = (char *)malloc(sizeof(char *));
+		if (!outfile) {
+ 	     	rb_raise(rb_eNoMemError,"out of memory");
+    	 	return NULL;
+   		}
+		
+		memset (vray,0,sizeof(struct threedsmaxsgi));
+		
+		strncpy(vray->scene, scene, BUFFERLEN-1);
+		strncpy(vray->scriptdir, scriptdir, BUFFERLEN-1);
+		strncpy(vray->scriptdir, image, BUFFERLEN-1);
+		
+  		outfile = threedsmaxsg_create(vray);
   		
 		if (!outfile) {
 			rb_raise(rb_eException,"Problem creating script file");
