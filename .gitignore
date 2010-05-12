@@ -1,0 +1,8 @@
+*.o
+*.a
+*.patch
+ruby/Makefile
+ruby/drqueue.bundle
+ruby/libdrqueue_ruby_wrap.c
+ruby/mkmf.log
+
