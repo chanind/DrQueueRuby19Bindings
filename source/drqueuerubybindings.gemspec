@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.requirements = ["Ruby bindings for DrQueue"]
   s.rubyforge_project = %q{drqueue}
   s.summary = %q{Ruby extension library providing an API to DrQueue}
-  s.description = %q{This gem is a Ruby extension library providing an API to DrQueue, the open source render queue. Git, SWIG and SCons are required for building. See https://ssl.drqueue.org/redmine/projects/drqueue/wiki/RubyBindingsHowto for more information.}}
+  s.description = %q{This gem is a Ruby extension library providing an API to DrQueue, the open source render queue. Git, SWIG and SCons are required for building. See https://ssl.drqueue.org/redmine/projects/drqueue/wiki/RubyBindingsHowto for more information.}
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
