@@ -17,23 +17,23 @@ end
 
 # determine os name
 if RUBY_PLATFORM =~ /darwin/i
-	rb_os = '__OSX'
+  rb_os = '__OSX'
 elsif RUBY_PLATFORM =~ /cygwin/i
-	rb_os = '__CYGWIN'
+  rb_os = '__CYGWIN'
 elsif RUBY_PLATFORM =~ /win32/i
-	rb_os = '__CYGWIN'
+  rb_os = '__CYGWIN'
 elsif RUBY_PLATFORM =~ /linux/i
-	rb_os = '__LINUX'
+  rb_os = '__LINUX'
 elsif RUBY_PLATFORM =~ /irix6/i
-	rb_os = '__IRIX'
+  rb_os = '__IRIX'
 end
 
 if File.directory? "drqueue"
   Dir::chdir 'drqueue'
   # try to do a Git pull
   if xsystem('git pull') == false
-	puts 'Git pull failed'
-	exit 1
+    puts 'Git pull failed'
+    exit 1
   end
 else
   # try to do a Git clone
