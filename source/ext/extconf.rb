@@ -28,15 +28,24 @@ elsif RUBY_PLATFORM =~ /irix6/i
 	rb_os = '__IRIX'
 end
 
-# try to do a SVN checkout
-if xsystem('git clone https://ssl.drqueue.org/git/drqueue.git') == false
-  puts 'Git clone failed'
-  exit 1
+if File.directory? "drqueue"
+  Dir::chdir 'drqueue'
+  # try to do a Git pull
+  if xsystem('git pull') == false
+	puts 'Git pull failed'
+	exit 1
+  end
+else
+  # try to do a Git clone
+  if xsystem('git clone https://ssl.drqueue.org/git/drqueue.git') == false
+    puts 'Git clone failed'
+    exit 1
+  end
+  Dir::chdir 'drqueue'
 end
 
 # try to build libdrqueue
-Dir::chdir 'drqueue' 
-if xsystem('scons libdrqueue') == false
+if xsystem('scons universal_binary=true libdrqueue') == false
   puts 'libdrqueue build failed'
   exit 1
 end
