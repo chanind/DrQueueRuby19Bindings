@@ -1,8 +1,9 @@
 *.o
 *.a
 *.patch
-ruby/Makefile
-ruby/drqueue.bundle
-ruby/libdrqueue_ruby_wrap.c
-ruby/mkmf.log
-
+source/ext/Makefile
+source/ext/drqueue.bundle
+source/ext/libdrqueue_ruby_wrap.c
+source/ext/mkmf.log
+source/ext/drqueue
+source/*.gem
