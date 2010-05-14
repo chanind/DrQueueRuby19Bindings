@@ -24,7 +24,7 @@
 
 %define DOCSTRING
 "The drqueue module allows the access to the libdrqueue library responsible
-of all major operations that can be applied remotely to drqueue master and
+of all major operations that can be applied remotely to DrQueue master and
 slaves. Also provides access to all data structures of DrQueue."
 %enddef
 %module (docstring=DOCSTRING) drqueue
@@ -302,39 +302,9 @@ typedef unsigned char uint8_t;
 		
 		return outfile;
 	}
-	
-	/* blenderlux script file generation */
-	char *blenderluxsg (char *scene, char *scriptdir)
-	{	
-		struct blenderluxsgi *luxren = (struct blenderluxsgi *)malloc (sizeof(struct blenderluxsgi));
-    	if (!luxren) {
- 	     	rb_raise(rb_eNoMemError,"out of memory");
-    	 	return NULL;
-   		}	
 		
-		char *outfile = (char *)malloc(sizeof(char *));
-		if (!outfile) {
- 	     	rb_raise(rb_eNoMemError,"out of memory");
-    	 	return NULL;
-   		}
-		
-		memset (luxren,0,sizeof(struct blenderluxsgi));
-		
-		strncpy(luxren->scene, scene, BUFFERLEN-1);
-		strncpy(luxren->scriptdir, scriptdir, BUFFERLEN-1);
-		
-  		outfile = blenderluxsg_create(luxren);
-  		
-		if (!outfile) {
-			rb_raise(rb_eException,"Problem creating script file");
-      		return NULL;
-		}
-		
-		return outfile;
-	}
-	
 	/* MentalRay script file generation */
-	char *mentalraysg (char *scene, char *scriptdir, char *renderdir, char *image, char *file_owner, char *camera, int res_x, int res_y, char *format, uint8_t kind)
+	char *mentalraysg (char *scene, char *scriptdir, char *renderdir, char *image, char *file_owner, char *camera, int res_x, int res_y, char *format, uint8_t render_type)
 	{	
 		struct mentalraysgi *ment = (struct mentalraysgi *)malloc (sizeof(struct mentalraysgi));
     	if (!ment) {
@@ -359,7 +329,7 @@ typedef unsigned char uint8_t;
 		ment->res_x = res_x;
 		ment->res_y = res_y;
 		strncpy(ment->format, format, BUFFERLEN-1);
-		ment->kind = kind;
+		ment->render_type = render_type;
 		
   		outfile = mentalraysg_create(ment);
   		
@@ -372,7 +342,7 @@ typedef unsigned char uint8_t;
 	}
 
 	/* Cinema4D script file generation */
-	char *cinema4dsg (char *scene, char *scriptdir, char *file_owner, uint8_t kind)
+	char *cinema4dsg (char *scene, char *scriptdir, char *file_owner)
 	{	
 		struct cinema4dsgi *cine = (struct cinema4dsgi *)malloc (sizeof(struct cinema4dsgi));
     	if (!cine) {
@@ -391,7 +361,6 @@ typedef unsigned char uint8_t;
 		strncpy(cine->scene, scene, BUFFERLEN-1);
 		strncpy(cine->scriptdir, scriptdir, BUFFERLEN-1);
 		strncpy(cine->file_owner, file_owner, BUFFERLEN-1);
-		cine->kind = kind;
 		
   		outfile = cinema4dsg_create(cine);
   		
