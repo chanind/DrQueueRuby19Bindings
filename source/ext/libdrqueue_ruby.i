@@ -684,14 +684,14 @@ typedef unsigned char uint8_t;
       VALUE pool_obj = rb_ary_entry(pool_list,i);
       struct pool *tpool = NULL;
       SWIG_ConvertPtr(pool_obj,(void **)&tpool, SWIGTYPE_p_pool, SWIG_POINTER_EXCEPTION | 0 );
-      request_slave_limits_pool_add(self->hwinfo.name,tpool->name,CLIENT);
+      request_slave_limits_pool_add(self->hwinfo.address,tpool->name,CLIENT);
     }
     int onpools = RARRAY(old_list)->len;
     for (i=0;i<onpools;i++) {
       VALUE pool_obj = rb_ary_entry(old_list,i);
       struct pool *tpool = NULL;
       SWIG_ConvertPtr(pool_obj,(void **)&tpool, SWIGTYPE_p_pool, SWIG_POINTER_EXCEPTION | 0 );
-      request_slave_limits_pool_remove(self->hwinfo.name,tpool->name,CLIENT);
+      request_slave_limits_pool_remove(self->hwinfo.address,tpool->name,CLIENT);
     }
     VALUE last_list = computer_list_pools(self);
     return last_list;
@@ -699,14 +699,14 @@ typedef unsigned char uint8_t;
 
 	void request_enable (int who)
 	{
-		if (!request_slave_limits_enabled_set (self->hwinfo.name,1,who)) {
+		if (!request_slave_limits_enabled_set (self->hwinfo.address,1,who)) {
 			rb_raise(rb_eIOError,drerrno_str());
 		}
 	}
 
 	void request_disable (int who)
 	{
-		if (!request_slave_limits_enabled_set (self->hwinfo.name,0,who)) {
+		if (!request_slave_limits_enabled_set (self->hwinfo.address,0,who)) {
 			rb_raise(rb_eIOError,drerrno_str());
 		}
 	}
@@ -720,14 +720,14 @@ typedef unsigned char uint8_t;
 
   void add_pool (char *pool_name, int who)
   {
-    if (!request_slave_limits_pool_add(self->hwinfo.name,pool_name,who)) {
+    if (!request_slave_limits_pool_add(self->hwinfo.address,pool_name,who)) {
 		  	rb_raise(rb_eIOError,drerrno_str());
     }
   }
 
   void remove_pool (char *pool_name, int who)
   {
-    if (!request_slave_limits_pool_remove(self->hwinfo.name,pool_name,who)) {
+    if (!request_slave_limits_pool_remove(self->hwinfo.address,pool_name,who)) {
 		  	rb_raise(rb_eIOError,drerrno_str());
     }
   }
