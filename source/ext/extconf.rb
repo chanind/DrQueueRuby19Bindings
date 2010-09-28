@@ -45,7 +45,7 @@ else
 end
 
 # try to build libdrqueue
-if xsystem('scons universal_binary=true libdrqueue') == false
+if xsystem('scons universal_binary=true build_drqman=false libdrqueue') == false
   puts 'libdrqueue build failed'
   exit 1
 end
