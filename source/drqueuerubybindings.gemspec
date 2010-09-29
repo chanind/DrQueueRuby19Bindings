@@ -2,12 +2,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{DrQueueRubyBindings}
-  s.version = "0.4"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = nil if s.respond_to? :required_rubygems_version=
   s.authors = ["Andreas Schroeder"]
   s.cert_chain = nil
-  s.date = %q{2010-09-28}
+  s.date = %q{2010-09-29}
   s.email = %q{andreas@drqueue.org}
   s.extensions = ["ext/extconf.rb"]
   s.files = ["COPYING", "ext/libdrqueue_ruby.i"]
