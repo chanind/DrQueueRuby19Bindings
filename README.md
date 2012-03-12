@@ -15,7 +15,7 @@ The offical DrQueue Ruby Bindings gem (Ruby 1.8 Only) is available at: (http://r
 Installation
 ------------
 
-You can installing the .gem file in the "gem" directory of this repository
+You can install by downloading the .gem file in the "gem" directory of this repository
 
 Once the gem is downloaded, you can install it with:
 
