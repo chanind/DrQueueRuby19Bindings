@@ -34,7 +34,7 @@ slaves. Also provides access to all data structures of DrQueue."
 
 
 // Tell SWIG to keep track of mappings between C/C++ structs/classes
-//%trackobjects;
+%trackobjects;
 
 
 %include "typemaps.i"
@@ -127,10 +127,11 @@ typedef unsigned char uint8_t;
 // these methods generate new objects
 %newobject *::request_job_list;
 %newobject *::request_computer_list;
-
+%newobject *::request_job_xfer;
 
 // JOB
 %extend job {
+  %newobject job;
 	job ()
 	{
 		struct job *j;
@@ -145,6 +146,7 @@ typedef unsigned char uint8_t;
 
 	~job ()
 	{
+	  SWIG_RubyRemoveTracking(self);
 		job_init(self);
 		//free (self);
 		job_frame_info_free (self);
@@ -175,6 +177,7 @@ typedef unsigned char uint8_t;
 		return variable->value;
 	}
 
+  %newobject request_frame_list;
 	VALUE request_frame_list (int who)
 	{
 		VALUE l = rb_ary_new();
@@ -516,6 +519,7 @@ typedef unsigned char uint8_t;
 			return (VALUE)NULL;
 		}
 	}
+
 	%newobject get_pool;
 	struct pool *get_pool (int n)
 	{
@@ -601,6 +605,7 @@ typedef unsigned char uint8_t;
 
 // struct pool
 %extend pool {
+  %newobject pool;
   pool (char *name)
   {
     struct pool *p;
@@ -616,14 +621,15 @@ typedef unsigned char uint8_t;
 
   ~pool ()
   {
-    //free (self);
-    computer_pool_free (self);
+    free (self);
+    //computer_pool_free (self);
   }
 }
 
 
 // COMPUTER
 %extend computer {
+  %newobject computer;
 	computer ()
 	{
 		struct computer *c;
@@ -642,15 +648,16 @@ typedef unsigned char uint8_t;
 		computer_free (self);
 	}
 
+  %newobject list_pools;
   VALUE list_pools (void)
   {
     VALUE l = rb_ary_new();
-	int npools = self->limits.npools;
+    int npools = self->limits.npools;
 
     if ((self->limits.pool.ptr = (struct pool *) computer_pool_attach_shared_memory(&self->limits)) == (void*)-1) {
     	rb_raise(rb_eException,drerrno_str());
     	return (VALUE)NULL;
-	}
+    }
 
     int i;
     for (i=0;i<npools;i++) {
@@ -670,13 +677,13 @@ typedef unsigned char uint8_t;
 
   VALUE set_pools (VALUE pool_list) {	
     int i;
-    if (RARRAY(pool_list)->len >0) {	
+    if (RARRAY_LEN(pool_list) >0) {	
       rb_raise(rb_eException,"Expecting a list");
       return (VALUE)NULL;
     }
-    int npools = RARRAY(pool_list)->len;
+    int npools = RARRAY_LEN(pool_list);
     VALUE old_list = computer_list_pools(self);
-    if (RARRAY(old_list)->len >0) {
+    if (RARRAY_LEN(old_list) >0) {
       rb_raise(rb_eException,"Expecting a list");
       return (VALUE)NULL;
     }
@@ -686,7 +693,7 @@ typedef unsigned char uint8_t;
       SWIG_ConvertPtr(pool_obj,(void **)&tpool, SWIGTYPE_p_pool, SWIG_POINTER_EXCEPTION | 0 );
       request_slave_limits_pool_add(self->hwinfo.address,tpool->name,CLIENT);
     }
-    int onpools = RARRAY(old_list)->len;
+    int onpools = RARRAY_LEN(old_list);
     for (i=0;i<onpools;i++) {
       VALUE pool_obj = rb_ary_entry(old_list,i);
       struct pool *tpool = NULL;

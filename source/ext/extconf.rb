@@ -1,5 +1,5 @@
 require 'mkmf'
-require 'ftools'
+require 'fileutils'
 
 # check if Git, SWIG and SCons are installed
 if xsystem('which git') == false
@@ -29,7 +29,7 @@ elsif RUBY_PLATFORM =~ /irix6/i
 end
 
 if File.directory? "drqueue"
-  Dir::chdir 'drqueue'
+  Dir::chdir 'drqueue/src'
   # try to do a Git pull
   if xsystem('git pull') == false
     puts 'Git pull failed'
@@ -41,7 +41,7 @@ else
     puts 'Git clone failed'
     exit 1
   end
-  Dir::chdir 'drqueue'
+  Dir::chdir 'drqueue/src'
 end
 
 # try to build libdrqueue
@@ -49,22 +49,22 @@ if xsystem('scons universal_binary=true build_drqman=false libdrqueue') == false
   puts 'libdrqueue build failed'
   exit 1
 end
-Dir::chdir '..'
+Dir::chdir '../..'
 
 # create swig wrapper
 puts 'generating swig interface file'
-puts 'swig -ruby -Idrqueue/ -Idrqueue/libdrqueue -D'+rb_os+' -Wall -autorename libdrqueue_ruby.i'
-xsystem('swig -ruby -Idrqueue/ -Idrqueue/libdrqueue -D'+rb_os+' -Wall -autorename libdrqueue_ruby.i')
+puts 'swig -ruby -Idrqueue/src/ -Idrqueue/src/libdrqueue -D'+rb_os+' -Wall -autorename libdrqueue_ruby.i'
+xsystem('swig -ruby -Idrqueue/src/ -Idrqueue/src/libdrqueue -D'+rb_os+' -Wall -autorename libdrqueue_ruby.i')
 puts 'look for output in mkmf.log'
 
 # build for os
 $CFLAGS += ' -D'+rb_os
 
 # include the headers
-$CFLAGS += ' -Idrqueue/ -Idrqueue/libdrqueue'
+$CFLAGS += ' -Idrqueue/src/ -Idrqueue/src/libdrqueue'
 
 # path to the drqueue lib
-$LOCAL_LIBS += 'drqueue/libdrqueue/libdrqueue.a'
+$LOCAL_LIBS += 'drqueue/src/libdrqueue/libdrqueue.a'
 
 # create the makefile
 create_makefile('drqueue')
